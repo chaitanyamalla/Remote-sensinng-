@@ -1,0 +1,15 @@
+import ee
+from ee_plugin import Map
+
+# load S2 Images and filter by date range
+dataset = ee.ImageCollection('COPERNICUS/S2') \
+              .filterDate('2018-01-01', '2018-01-30')
+
+# visualize options
+rgbVis = { 'min': 0.0, 'max': 4096, 'bands': ['B4', 'B3', 'B2'] }
+
+#set map center
+Map.setCenter(100, 13, 12); 
+
+#Add S2 to map
+Map.addLayer(dataset.median(), rgbVis, 'Sentinel-2 (RGB)'); 
