@@ -14,3 +14,37 @@ Map.setCenter(100, 12.5, 13);
 
 #Add LC08 to map
 Map.addLayer(dataset.mean(), trueColor432Vis, 'LC08 (RGB)'); 
+
+
+
+##########################without cloud cover###########################################
+import ee
+from ee_plugin import Map
+
+#Define POI or AOI as GeoJSON
+geometry = {
+  "type": "Point",
+  "coordinates": [
+    102.38832011974057,
+    12.352783045559542
+  ]
+}
+
+#load LC08 images / Filter by date range / 
+#filter by cloud less than 5%
+#select bands RGB (432)
+dataset = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA') \
+.filterDate('2018-01-01', '2019-12-31') \
+.filterMetadata('CLOUD_COVER', 'less_than', 1) \
+.filterBounds(geometry) \
+.select(['B4', 'B3', 'B2']) 
+
+#Set Visibility
+trueColor432Vis = { 'min': 0.0, 'max': 0.3, 'gamma':1 }
+
+#Set map center
+Map.setCenter(102.388320, 12.35278, 13); 
+
+#Add LC08 to map
+Map.addLayer(dataset.mean(), trueColor432Vis, 'LC08 Cloud / Bounds'); 
+#########################################################################################
