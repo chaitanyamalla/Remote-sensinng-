@@ -1,0 +1,16 @@
+import ee
+from ee_plugin import Map
+
+#Load LC08 images / Filter by date range / select bands RGB (432)
+dataset = ee.ImageCollection('LANDSAT/LC08/C01/T1_TOA') \
+.filterDate('2019-04-01', '2019-4-30') \
+.select(['B4', 'B3', 'B2'])
+
+#Set Visibility
+trueColor432Vis = { 'min': 0.0, 'max': 0.4 }
+
+#Set map center
+Map.setCenter(100, 12.5, 13); 
+
+#Add LC08 to map
+Map.addLayer(dataset.mean(), trueColor432Vis, 'LC08 (RGB)'); 
